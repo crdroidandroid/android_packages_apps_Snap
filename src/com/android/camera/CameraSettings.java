@@ -1210,7 +1210,7 @@ public class CameraSettings {
         upgradeCameraId(pref);
     }
 
-    public static void upgradeOldVersion(SharedPreferences pref, Context context) {
+    private static void upgradeOldVersion(SharedPreferences pref, Context context) {
         int version;
         try {
             version = pref.getInt(KEY_VERSION, 0);
