@@ -53,15 +53,23 @@ public class DisableCameraReceiver extends BroadcastReceiver {
     }
 
     private boolean hasCamera() {
-        int n = CameraHolder.instance().getNumberOfCameras();
+        int n = android.hardware.Camera.getNumberOfCameras();
         Log.i(TAG, "number of camera: " + n);
         return (n > 0);
     }
 
     private boolean hasBackCamera() {
-        int backCameraId = CameraHolder.instance().getBackCameraId();
-        Log.i(TAG, backCameraId == -1 ? "no back camera" : ("back camera found: " + backCameraId));
-        return backCameraId != -1;
+        int n = android.hardware.Camera.getNumberOfCameras();
+        CameraInfo info = new CameraInfo();
+        for (int i = 0; i < n; i++) {
+            android.hardware.Camera.getCameraInfo(i, info);
+            if (info.facing == CameraInfo.CAMERA_FACING_BACK) {
+                Log.i(TAG, "back camera found: " + i);
+                return true;
+            }
+        }
+        Log.i(TAG, "no back camera");
+        return false;
     }
 
     private void disableComponent(Context context, String klass) {
